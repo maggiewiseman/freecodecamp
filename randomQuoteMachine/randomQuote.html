@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Coda" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font-awesome.min.css" >
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        font-family: 'Coda', Arial;
+        background-color: #716969;
+        color: white;
+        display: -webkit-box;  /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+        display: -moz-box;      /* OLD: Firefox (buggy) */
+        display: -ms-flexbox;  /* MID: IE 10 */
+        display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
+        display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
+        align-items: center;
+        justify-content: center;
+        min-height: 100%
+      }
+      main {
+        width: 50%;
+        display:flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+      }
+      #quote-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 400px;
+        background-color: #2D2E2E;
+        text-align: center;
+      }
+
+      h1 {
+        width: 80%;
+        padding: 0 30px;
+      }
+
+      .bottom-row {
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .fa-twitter {
+        font-size: 40px;
+        color: #2D2E2E;
+        cursor: pointer;
+      }
+
+      button {
+        font-size: 16px;
+        background-color: #2D2E2E;
+        border: 3px solid transparent;
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        border: solid #7D897D 3px;
+      }
+
+      /* remove default blue border from button, specifically for chrome */
+      button:focus {
+        outline: 0;
+      }
+      p, a {
+        color: #2D2E2E;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+<body>
+  <main>
+   <div id="quote-box">
+   </div>
+   <div class="bottom-row">
+     <div id="share">
+
+     </div>
+     <p>Jokes from: <a href="http://www.icndb.com/api/">The Internet Chuck Norris Database</a></p>
+     <button id="new-quote">New Joke</button>
+   </div>
+  </main>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function(){
+
+      function getNewQuote(){
+        $.getJSON("http://api.icndb.com/jokes/random", function(json){
+          console.log(json);
+          var html = "";
+          var quote = json.value.joke;
+          //console.log(quote);
+          html += "<h1 class='quote'>" + quote + "</h1>";
+
+          // console.log(quote);
+          var data = quote.replace(/\s+/gi, "%20")
+          data = data.replace(/'/g, "%27");
+        //  var data = "data-text=" + "'" + quote.toString(); + "'";
+          console.log(data);
+          //html += "<h3 class='author'> By: " + quote.author + "</h3>"
+          var shareLink = "<a class='twitter-share-button' href='https://twitter.com/share?text=" + data + "' target='_blank'><i class='fa fa-twitter' aria-hidden='true'></i></a>";
+
+          $('#share').html(shareLink);
+          $("#quote-box").html(html);
+        });
+      }
+
+      $("#new-quote").on("click", function(){
+          getNewQuote();
+      });
+
+      getNewQuote();
+      console.log("in document ready");
+    });
+  </script>
+</body>
+</html>
