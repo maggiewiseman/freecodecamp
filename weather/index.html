@@ -17,19 +17,63 @@
     </head>
     <body>
 
-      <main>
+      <div class="container">
         <h1 id="title">Local Weather App</h1>
         <div id="top-summary">
-          <p id="icon"></p>
+          <p>icon <span id="temp">Temp</span> &deg;<span id="change-units">F</span></p>
+          <p id="data"></p>
+
         </div>
         <div class="boxes">
           <div id="city">City</div>
           <div id="forecast">forecast</div>
           <div id="wind"></div>
+          <div id="pressure"></div>
         </div>
-      </main>
-      <script>
+      </div>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          //get weather div and change it to some text.
+          var coords = "";
 
+          if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              console.log(position);
+              coords = position.coords.latitude + "," + position.coords.longitude;
+              console.log("coords: " + coords);
+              $("#data").html("latitude: " + position.coords.latitude + "   <br>longitude: " + position.coords.longitude);
+              var cityUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + coords + "&sensor=true";
+              $.getJSON(cityUrl, function(googleData){
+                $('#city').html(googleData.results[0].address_components[2].long_name);
+                }, function(error) {
+                 // Hi!  I'm an error handler!
+                  console.error(error);
+                });
+            });
+          }
+          $.getJSON("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/912ec9cbff641c7880ce6e823ed50f18/42.3601,-71.0589", function(json){
+            $('#temp').html(json.currently.temperature);
+            $('#forecast').html(json.currently.icon);
+            $('#wind').html(json.currently.windSpeed + " knots");
+            $('#pressure').html(json.currently.pressure + " mbar");
+
+          }, function(error) {
+           // Hi!  I'm an error handler!
+            console.error(error);
+          });
+
+          var units = $('#change-units').html();
+          if(units === "F") {
+            console.log("convert to celsius");
+            var temp = $("#temp").html();
+            temp = parseFloat(temp);
+            console.log(temp);
+          } else {
+            console.log("conver to F");
+          }
+
+        });
       </script>
     </body>
   </html>
