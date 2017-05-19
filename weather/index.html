@@ -36,9 +36,28 @@
           <div id="pressure"></div>
         </div>
       </div>
+      <footer>
+        <h4>Powered By <a href="https://darksky.net/">Dark Sky API</a>
+      </footer>
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script type="text/javascript">
+        var weatherIcon = {
+          'clear-day': 'path to icon',
+          'clear-night': '',
+          'rain': '',
+          'snow': '',
+          'sleet': '',
+          'wind': '',
+          'fog': '',
+          'cloudy': '',
+          'partly-cloudy-day': '',
+          'partly-cloudy-night': '',
+          'hail': '',
+          'thunderstorm': '',
+          'tornado': ''
+        }
+
         $(document).ready(function(){
           //get weather div and change it to some text.
           var coords = "";
