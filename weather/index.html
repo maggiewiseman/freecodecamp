@@ -1,9 +1,9 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title></title>
+      <title>Local Weather App</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-      <link rel="stylesheet" href="css/bootswatch-paper">
+      <link rel="stylesheet" href="css/bootswatch-paper.css">
       <style>
         html, body, .view {
           height: 100%;
@@ -22,6 +22,10 @@
         .container {
           display: flex;
           flex-flow: column nowrap;
+        }
+
+        #boxes-row {
+          margin-top: 50px;
         }
 
         .box {
@@ -101,7 +105,7 @@
         }
         /* footer styles */
         #creds {
-          margin-top: 100px;
+          margin-top: 80px;
           height: 50px;
           display: flex;
           flex-flow: column nowrap;
@@ -119,19 +123,18 @@
         <div class="container">
           <div class="row d-flex justify-content-center">
             <div id="header">
-              <h1 id="title">Local Weather App</h1>
+              <h1 id="title">Local Weather</h1>
               <div id="top-summary" class="d-flex flex-column align-items-center">
                 <div id="sprite"></div>
-                  <h3><span id="temp">Temp</span> &deg;<a id="change-units" href="#">F</a></h3>
-
+                <h3><span id="temp">Temp</span> &deg;<a id="change-units" href="#">F</a></h3>
+                <h4><span id="city">City</span></h4>
             </div>
           </div>
         </div> <!-- end top row -->
 
         <div id="boxes-row" class="row d-flex justify-content-around">
-          <div id="city" class="box">Info</div>
           <div id="forecast" class="box">Info</div>
-          <div id="wind" class="box">Info</div>
+          <div class="box"><span id="bearing"></span>&nbsp; <span id="wind"></span></div>
           <div id="pressure" class="box">Info</div>
         </div>
 
@@ -172,6 +175,28 @@
             'tornado': 'url("images/tulen-travel-tornado.jpg")'
           }
 
+          function getWindDirection(bearing) {
+            console.log('bearing=' + bearing);
+            bearing = parseInt(bearing, 10);
+            console.log('parsed bearing: ' + bearing);
+            if(bearing >=10 && bearing < 80) {
+              return 'NE';
+            } else if (bearing >=80 && bearing <100){
+              return 'E';
+            } else if (bearing >=100 && bearing <170) {
+              return 'SE';
+            } else if (bearing >=170 && bearing <190) {
+              return 'S';
+            } else if (bearing >=190 && bearing <260) {
+              return 'SW';
+            } else if (bearing >=260 && bearing <280) {
+              return 'W';
+            } else if (bearing >=280 && bearing <350) {
+              return 'NW';
+            } else if ((bearing >=350 && bearing < 360) || (bearing >= 0 && bearing <10)) {
+              return 'N';
+            }
+          }
           //get latitude and longitude to conver to city name
           var coords = "";
           if(navigator.geolocation) {
@@ -181,7 +206,7 @@
               coords = position.coords.latitude + "," + position.coords.longitude;
 
               //$("#data").html("latitude: " + position.coords.latitude + "   <br>longitude: " + position.coords.longitude);
-              var cityUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + coords + "&sensor=true";
+              var cityUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + coords + "&sensor=true";
               $.getJSON(cityUrl, function(googleData){
                 $('#city').html(googleData.results[0].address_components[2].long_name);
                 }, function(error) {
@@ -200,15 +225,15 @@
 
             //set background-image
 
-            //get the url that pertains to the icon from the object
-            //add it to view using .attr('background-image', )
+            //get the url that pertains to the icon from the weatherImage object above. Add as attribute to view
             $('#view-div-id').css('background-image', weatherImage[json.currently.icon]);
             //$('#view-div-id').css('background-image', weatherImage['partly-cloudy-day']);
 
-
             $('#temp').html(json.currently.temperature);
             $('#forecast').html(json.currently.summary);
-            console.log(json.hourly.summary);
+
+            console.log(json.currently);
+            $('#bearing').html(getWindDirection(json.currently.windBearing));
 
             $('#wind').html(json.currently.windSpeed + " knots");
             $('#pressure').html(json.currently.pressure + " mbar");
