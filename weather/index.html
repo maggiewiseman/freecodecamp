@@ -10,7 +10,7 @@
         }
 
         .view {
-          background-image: url("images/sunny-grass-mr-robot-lr.jpg");
+
           background-repeat: no-repeat;
           background-attachment: fixed;
           background-position: center;
@@ -115,7 +115,7 @@
       </style>
     </head>
     <body>
-      <div class="view">
+      <div id="view-div-id" class="view">
         <div class="container">
           <div class="row d-flex justify-content-center">
             <div id="header">
@@ -153,9 +153,27 @@
         }
 
         $(document).ready(function(){
-          //get weather div and change it to some text.
-          var coords = "";
 
+          //object that connects type of weather (icon) to images
+
+          var weatherImage = {
+            'clear-day': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'clear-night': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'rain': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'snow': 'url("images/nico-benedickt-187873.jpg")',
+            'sleet': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'wind': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'fog': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'cloudy': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'partly-cloudy-day': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'partly-cloudy-night': 'url("images/sunset-california-jesse-collins.jpg")',
+            'hail': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'thunderstorm': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'tornado': 'url("images/sunny-grass-mr-robot-lr.jpg")'
+          }
+
+          //get latitude and longitude to conver to city name
+          var coords = "";
           if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
               console.log("lat: " + position.coords.latitude);
@@ -172,11 +190,20 @@
                 });
             });
           }
+
+          //weather api call to get forecast data
           $.getJSON("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/912ec9cbff641c7880ce6e823ed50f18/42.3601,-71.0589", function(json){
 
             //set icon
             console.log("icon: " + json.currently.icon);
             $('#sprite').addClass(json.currently.icon);
+
+            //set background-image
+
+            //get the url that pertains to the icon from the object
+            //add it to view using .attr('background-image', )
+            $('#view-div-id').css('background-image', weatherImage[json.currently.icon]);
+
 
             $('#temp').html(json.currently.temperature);
             $('#forecast').html(json.currently.summary);
@@ -190,6 +217,7 @@
             console.error(error);
           });
 
+          //function to change units of temperature
           $('#change-units').on('click', function(){
             var units = $('#change-units').html();
             if(units === "F") {
