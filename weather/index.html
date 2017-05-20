@@ -30,7 +30,7 @@
           height: 30px;
           text-align: center;
           color: white;
-          background-color: rgba(79,104, 73, .5);
+          background-color: rgba(10,110, 189, .5);
           padding: 20px 40px;
           border-radius: 4px;
           font-size: 16px;
@@ -158,18 +158,18 @@
 
           var weatherImage = {
             'clear-day': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'clear-night': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'rain': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'clear-night': 'url("images/thomas-shellberg-starry-night.jpg")',
+            'rain': 'url("images/michael-podger-rain.jpg")',
             'snow': 'url("images/nico-benedickt-187873.jpg")',
-            'sleet': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'wind': 'url("images/sunny-grass-mr-robot-lr.jpg")',
+            'sleet': 'url("images/aaron-burden-hail.jpg")',
+            'wind': 'url("images/ivan-vranic-wind.jpg")',
             'fog': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'cloudy': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'partly-cloudy-day': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'partly-cloudy-night': 'url("images/sunset-california-jesse-collins.jpg")',
-            'hail': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'thunderstorm': 'url("images/sunny-grass-mr-robot-lr.jpg")',
-            'tornado': 'url("images/sunny-grass-mr-robot-lr.jpg")'
+            'cloudy': 'url("images/cloud-hills-dorin-vancea.jpg")',
+            'partly-cloudy-day': 'url("images/cloud-poppies-henry-be.jpg")',
+            'partly-cloudy-night': 'url("images/tasi-zoltan-cloudy-night.jpg")',
+            'hail': 'url("images/aaron-burden-hail.jpg")',
+            'thunderstorm': 'url("images/sean-mcauliffe-lightning.jpg")',
+            'tornado': 'url("images/tulen-travel-tornado.jpg")'
           }
 
           //get latitude and longitude to conver to city name
@@ -203,6 +203,7 @@
             //get the url that pertains to the icon from the object
             //add it to view using .attr('background-image', )
             $('#view-div-id').css('background-image', weatherImage[json.currently.icon]);
+            //$('#view-div-id').css('background-image', weatherImage['partly-cloudy-day']);
 
 
             $('#temp').html(json.currently.temperature);
