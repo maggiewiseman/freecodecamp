@@ -2,9 +2,14 @@
   <html>
     <head>
       <title></title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <link rel="stylesheet" href="css/bootswatch-paper">
       <style>
-        html {
+        html, body, .view {
+          height: 100%;
+        }
+
+        .view {
           background-image: url("images/sunny-grass-mr-robot-lr.jpg");
           background-repeat: no-repeat;
           background-attachment: fixed;
@@ -14,49 +19,129 @@
           -o-background-size: cover;
           background-size: cover;
         }
+        .container {
+          display: flex;
+          flex-flow: column nowrap;
+        }
+
+        .box {
+          display: flex;
+          align-items: center;
+          height: 30px;
+          text-align: center;
+          color: white;
+          background-color: rgba(79,104, 73, .5);
+          padding: 20px 40px;
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        #creds {
+          height: 50px;
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: center;
+        }
+
+        #dark-sky {
+          margin-bottom: 0;
+        }
+
+        #sprite {
+          height: 50px;
+          width: 70px;
+        }
+
+        .clear-day{
+          background: url("images/climacons.png") 0 0;
+        }
+
+        .clear-night{
+          background: url("images/climacons.png") 0 -50px;
+        }
+
+        .rain {
+          background: url("images/climacons.png") 0 -100px;
+        }
+
+        .snow {
+          background: url("images/climacons.png") 0 -150px;
+        }
+
+        .sleet {
+          background: url("images/climacons.png") 0 -200px;
+        }
+
+        .wind {
+          background: url("images/climacons.png") 0 -250px;
+        }
+
+        .fog {
+          background: url("images/climacons.png") 0 -300px;
+        }
+
+        .cloudy {
+          background: url("images/climacons.png") 0 -350px;
+        }
+
+        .partly-cloudy-day {
+          background: url("images/climacons.png") 0 -400px;
+        }
+
+        .partly-cloudy-night {
+          background: url("images/climacons.png") 0 -450px;
+        }
+
+        .hail {
+          background: url("images/climacons.png") 70px 0;
+        }
+
+        .thunderstorm {
+          background: url("images/climacons.png") 70px -50px;
+        }
+
+        .tornado {
+          background: url("images/climacons.png") 70px -100;
+        }
+
+
       </style>
     </head>
     <body>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 offset-3">
-            <h1 id="title">Local Weather App</h1>
-            <div id="top-summary">
-              <p>icon <span id="temp">Temp</span> &deg;<span id="change-units">F</span></p>
-              <p id="data"></p>
+      <div class="view">
+        <div class="container">
+          <div class="row d-flex justify-content-center">
+            <div id="header">
+              <h1 id="title">Local Weather App</h1>
+              <div id="top-summary" class="d-flex flex-column align-items-center">
+                <div id="sprite"></div>
+                  <h3><span id="temp">Temp</span> &deg;<span id="change-units">F</span></h3>
 
+            </div>
           </div>
+        </div> <!-- end top row -->
+
+        <div id="boxes-row" class="row d-flex justify-content-around">
+          <div id="city" class="box">Info</div>
+          <div id="forecast" class="box">Info</div>
+          <div id="wind" class="box">Info</div>
+          <div id="pressure" class="box">Info</div>
         </div>
 
+        <div id="creds" class="row d-flex justify-content-center">
+            <p id="dark-sky">Powered By <a href="https://darksky.net/">Dark Sky API</a></p>
+            <p id="climacons">Climacons by <a href="http://adamwhitcroft.com/climacons/">Adam Whitcroft</a>
         </div>
-        <div class="boxes">
-          <div id="city">City</div>
-          <div id="forecast">forecast</div>
-          <div id="wind"></div>
-          <div id="pressure"></div>
-        </div>
-      </div>
-      <footer>
-        <h4>Powered By <a href="https://darksky.net/">Dark Sky API</a>
-      </footer>
+
+      </div> <!-- end container -->
+    </div> <!-- end view -->
+
+
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-      <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <script type="text/javascript">
-        var weatherIcon = {
-          'clear-day': 'path to icon',
-          'clear-night': '',
-          'rain': '',
-          'snow': '',
-          'sleet': '',
-          'wind': '',
-          'fog': '',
-          'cloudy': '',
-          'partly-cloudy-day': '',
-          'partly-cloudy-night': '',
-          'hail': '',
-          'thunderstorm': '',
-          'tornado': ''
-        }
+
 
         $(document).ready(function(){
           //get weather div and change it to some text.
@@ -64,10 +149,10 @@
 
           if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-              console.log(position);
+
               coords = position.coords.latitude + "," + position.coords.longitude;
-              console.log("coords: " + coords);
-              $("#data").html("latitude: " + position.coords.latitude + "   <br>longitude: " + position.coords.longitude);
+
+              //$("#data").html("latitude: " + position.coords.latitude + "   <br>longitude: " + position.coords.longitude);
               var cityUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + coords + "&sensor=true";
               $.getJSON(cityUrl, function(googleData){
                 $('#city').html(googleData.results[0].address_components[2].long_name);
@@ -79,7 +164,9 @@
           }
           $.getJSON("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/912ec9cbff641c7880ce6e823ed50f18/42.3601,-71.0589", function(json){
             $('#temp').html(json.currently.temperature);
-            $('#forecast').html(json.currently.icon);
+            $('#forecast').html(json.currently.summary);
+            console.log(json.currently.summary);
+
             $('#wind').html(json.currently.windSpeed + " knots");
             $('#pressure').html(json.currently.pressure + " mbar");
 
