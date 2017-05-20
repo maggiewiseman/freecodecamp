@@ -37,17 +37,8 @@
           font-weight: bold;
         }
 
-        #creds {
-          height: 50px;
-          display: flex;
-          flex-flow: column nowrap;
-          align-items: center;
-        }
 
-        #dark-sky {
-          margin-bottom: 0;
-        }
-
+        /* content styles */
         #sprite {
           height: 50px;
           width: 70px;
@@ -102,9 +93,24 @@
         }
 
         .tornado {
-          background: url("images/climacons.png") 70px -100;
+          background: url("images/climacons.png") 70px -100px;
         }
 
+        #change-units {
+          text-decoration: none;
+        }
+        /* footer styles */
+        #creds {
+          margin-top: 100px;
+          height: 50px;
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: center;
+        }
+
+        #dark-sky {
+          margin-bottom: 0;
+        }
 
       </style>
     </head>
@@ -116,7 +122,7 @@
               <h1 id="title">Local Weather App</h1>
               <div id="top-summary" class="d-flex flex-column align-items-center">
                 <div id="sprite"></div>
-                  <h3><span id="temp">Temp</span> &deg;<span id="change-units">F</span></h3>
+                  <h3><span id="temp">Temp</span> &deg;<a id="change-units" href="#">F</a></h3>
 
             </div>
           </div>
@@ -141,7 +147,10 @@
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <script type="text/javascript">
+        function setIcon(type) {
+          console.log("type: " + type);
 
+        }
 
         $(document).ready(function(){
           //get weather div and change it to some text.
@@ -149,7 +158,8 @@
 
           if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-
+              console.log("lat: " + position.coords.latitude);
+              console.log("long: " + position.coords.longitude);
               coords = position.coords.latitude + "," + position.coords.longitude;
 
               //$("#data").html("latitude: " + position.coords.latitude + "   <br>longitude: " + position.coords.longitude);
@@ -163,9 +173,14 @@
             });
           }
           $.getJSON("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/912ec9cbff641c7880ce6e823ed50f18/42.3601,-71.0589", function(json){
+
+            //set icon
+            console.log("icon: " + json.currently.icon);
+            $('#sprite').addClass(json.currently.icon);
+
             $('#temp').html(json.currently.temperature);
             $('#forecast').html(json.currently.summary);
-            console.log(json.currently.summary);
+            console.log(json.hourly.summary);
 
             $('#wind').html(json.currently.windSpeed + " knots");
             $('#pressure').html(json.currently.pressure + " mbar");
@@ -175,16 +190,25 @@
             console.error(error);
           });
 
-          var units = $('#change-units').html();
-          if(units === "F") {
-            console.log("convert to celsius");
-            var temp = $("#temp").html();
-            temp = parseFloat(temp);
-            console.log(temp);
-          } else {
-            console.log("conver to F");
-          }
+          $('#change-units').on('click', function(){
+            var units = $('#change-units').html();
+            if(units === "F") {
+              console.log("convert to celsius");
+              var temp = $("#temp").html();
+              temp = parseFloat(temp);
+              temp = ( (temp - 32) * 5/9).toFixed(2);
+              $('#temp').html(temp);
+              $('#change-units').html("C");
 
+              console.log(temp);
+            } else {
+              var temp = $("#temp").html();
+              temp = parseFloat(temp);
+              temp = ( (temp * 9/5) + 32).toFixed(2);
+              $('#temp').html(temp);
+              $('#change-units').html("F");
+            }
+          });
         });
       </script>
     </body>
